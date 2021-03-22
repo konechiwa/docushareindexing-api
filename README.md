@@ -1,2 +1,1 @@
-# docushareindexing-api
-# docushareindexing-api
+# DocuShareIndexing APIs
