@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DocuShareIndexingAPI.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -16,9 +17,10 @@ namespace DocuShareIndexingAPI
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        private readonly IConfiguration _config;
+        public Startup(IConfiguration config)
         {
-            Configuration = configuration;
+            _config = config;
         }
 
         public IConfiguration Configuration { get; }
@@ -27,7 +29,11 @@ namespace DocuShareIndexingAPI
         public void ConfigureServices(IServiceCollection services)
         {
 
+            services.AddApplicationServices(_config);
             services.AddControllers();
+            services.AddCors();
+            services.AddIdentityServices(_config);
+            
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "DocuShareIndexingAPI", Version = "v1" });
@@ -47,6 +53,13 @@ namespace DocuShareIndexingAPI
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors(x =>
+                x.AllowAnyHeader()
+                .AllowAnyMethod()
+                .WithOrigins("http://localhost:4200"));
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 
