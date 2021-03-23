@@ -31,13 +31,19 @@ namespace DocuShareIndexingAPI.Controllers
             _tokenService = tokenService;
         }
 
+        [HttpGet]
+        [Route("test/{refno}")]
+        public ActionResult<string> Get(string refno) {
+            return refno;
+        }
+
 
         /**
         * @dev Return export shipment declarations data.
         * @param refno The variable refer to key in database.
         */
-        [HttpGet("export")]
-        [Route("{refno}")]
+        [HttpGet]
+        [Route("export/{refno}")]
         public async Task<ActionResult<IEnumerable<DeclarationMessageDto>>> getExportShipmentMessageByRefNo(string refno)
         {
             // 1. Initialize data adapter with connection string.
@@ -48,7 +54,7 @@ namespace DocuShareIndexingAPI.Controllers
                 "SP_DOCUSHARE_EXP_FIND", 
                 CommandType.StoredProcedure, 
                 new SqlParameter[] { new SqlParameter("@REFNO", refno)});
-
+            
             // 3. Convert datarow to object representation.
             return DeclarationMessageHelper.convertDataSetToDeclarationMessage(dsDeclarationMessage);
         }
@@ -59,8 +65,8 @@ namespace DocuShareIndexingAPI.Controllers
         * @dev Return import shipment declarations data.
         * @param refno The variable refer to key in database.
         */
-        [HttpGet("import")]
-        [Route("{refno}")]
+        [HttpGet]
+        [Route("import/{refno}")]
         public async Task<ActionResult<IEnumerable<DeclarationMessageDto>>> getImportShipmentMessageByRefNo(string refno)
         {
             // 1. Initialize data adapter with connection string.
