@@ -7,6 +7,7 @@ using DocuShareIndexingAPI.Data;
 using DocuShareIndexingAPI.DTOs;
 using DocuShareIndexingAPI.Entities;
 using DocuShareIndexingAPI.Interface;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 
@@ -42,6 +43,7 @@ namespace DocuShareIndexingAPI.Controllers
         * @dev Return export shipment declarations data.
         * @param refno The variable refer to key in database.
         */
+        [Authorize]
         [HttpGet]
         [Route("export/{refno}")]
         public async Task<ActionResult<IEnumerable<DeclarationMessageDto>>> getExportShipmentMessageByRefNo(string refno)
@@ -65,6 +67,7 @@ namespace DocuShareIndexingAPI.Controllers
         * @dev Return import shipment declarations data.
         * @param refno The variable refer to key in database.
         */
+        [Authorize]
         [HttpGet]
         [Route("import/{refno}")]
         public async Task<ActionResult<IEnumerable<DeclarationMessageDto>>> getImportShipmentMessageByRefNo(string refno)

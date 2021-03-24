@@ -60,17 +60,23 @@ namespace DocuShareIndexingAPI.Controllers
                 @"INSERT INTO Users (
                     Username, 
                     PasswordHash, 
-                    PasswordSalt
+                    PasswordSalt,
+                    ProjectName,
+                    CompanyName
                 ) VALUES (
                     @Username, 
                     @PasswordHash, 
-                    @PasswordSalt
+                    @PasswordSalt,
+                    @ProjectName,
+                    @CompanyName
                 )",
                 CommandType.Text,
                 new SqlParameter[] {
                     new SqlParameter("@Username", registerDto.Username),
                     new SqlParameter("@PasswordHash", user.PasswordHash),
                     new SqlParameter("@PasswordSalt", user.PasswordSalt),
+                    new SqlParameter("@ProjectName", registerDto.ProjectName),
+                    new SqlParameter("@CompanyName", registerDto.CompanyName)
                 });
 
             // 5. Return the user dto.

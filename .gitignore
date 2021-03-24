@@ -449,3 +449,4 @@ appsettings.json
 # vscode
 .vscode
 *.Development.json
+idea/
