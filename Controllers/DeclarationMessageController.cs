@@ -32,13 +32,6 @@ namespace DocuShareIndexingAPI.Controllers
             _tokenService = tokenService;
         }
 
-        [HttpGet]
-        [Route("test/{refno}")]
-        public ActionResult<string> Get(string refno) {
-            return refno;
-        }
-
-
         /**
         * @dev Return export shipment declarations data.
         * @param refno The variable refer to key in database.

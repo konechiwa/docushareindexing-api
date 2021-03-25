@@ -31,6 +31,7 @@ namespace DocuShareIndexingAPI.Controllers
         * @dev Return EventMessage object.
         * @param eventMessageDto The EventMessage data from request.
         */
+        [Authorize]
         [HttpPost("add")]
         public async Task<ActionResult<EventMessage>> addEventMessage(EventMessageDto eventMessageDto)
         {
@@ -76,6 +77,13 @@ namespace DocuShareIndexingAPI.Controllers
             };
         }
 
+
+
+        /**
+        * @dev Return list of EventMessage objects.
+        * @param eventKey That value is a key to search for events.
+        */
+        [Authorize]
         [HttpGet]
         [Route("find/{eventKey}")]
         public async Task<ActionResult<IEnumerable<EventMessage>>> findEventMessageByKey(string eventKey)
@@ -103,6 +111,7 @@ namespace DocuShareIndexingAPI.Controllers
         /**
         * @dev Returns EventMessage History.
         */
+        [Authorize]
         [HttpGet("history")]
         public async Task<ActionResult<IEnumerable<EventMessage>>> getEventMessageHistory()
         {
