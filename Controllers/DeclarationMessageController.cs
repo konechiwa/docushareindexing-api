@@ -19,17 +19,15 @@ namespace DocuShareIndexingAPI.Controllers
         /**
         * @notice readonly variables.
         */
-        private readonly ITokenService _tokenService;
         private readonly IConfiguration _config;
 
 
         /**
         * @notice constructor class.
         */
-        public DeclarationMessageController(IConfiguration config, ITokenService tokenService)
+        public DeclarationMessageController(IConfiguration config)
         {
             _config = config;
-            _tokenService = tokenService;
         }
 
         /**

@@ -19,10 +19,8 @@ namespace DocuShareIndexingAPI.Controllers
         * @notice readonly variables.
         */
         private readonly IConfiguration _config;
-        private readonly ITokenService _tokenService;
-        public EventMessageController(IConfiguration config, ITokenService tokenService)
+        public EventMessageController(IConfiguration config)
         {
-            _tokenService = tokenService;
             _config = config;
         }
 
@@ -122,6 +120,27 @@ namespace DocuShareIndexingAPI.Controllers
             // 2. Execute SqlCommand data to DataSet.
             DataSet dsSet = await adapter.getDataSetAsync(
                 "SP_EventMessage_History", 
+                CommandType.StoredProcedure);
+
+            // Final Return the events
+            return EventMessageHelper.convertDataSetToEventMessageList(dsSet);
+        }
+
+
+        /**
+        * @dev Returns EventMessage ErrorList.
+        */
+        [Authorize]
+        [HttpGet("pending")]
+        public async Task<ActionResult<IEnumerable<EventMessage>>> getEventMessageErrorList()
+        {
+
+            // 1. Create DbAdapter object for execute user to database.
+            var adapter = new DbAdapter(_config.GetConnectionString("DefaultConnection"));
+
+            // 2. Execute SqlCommand data to DataSet.
+            DataSet dsSet = await adapter.getDataSetAsync(
+                "SP_EventMessage_ErrorList", 
                 CommandType.StoredProcedure);
 
             // Final Return the events
