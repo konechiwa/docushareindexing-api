@@ -105,16 +105,25 @@ namespace DocuShareIndexingAPI.Controllers
 
     }
 
+
+
+    /**
+    * @notice The WorkerJobHelper class is responsible to convert stream data objects.
+    * NOTE: It is a static class.
+    */
     public static class WorkerJobHelper
     {
         public static List<WorkerJobDto> convertDataSetToWorkerJobs(DataSet dataset)
         {
+            // 1. Create a list of WorkerJobDto.
             List<WorkerJobDto> jobs = new List<WorkerJobDto>();
 
             try
             {
+                // 2. Convert data row to WorkerJobDto object.
                 foreach (DataRow row in dataset.Tables[0].Rows)
                 {
+                    // NOTE: Add new WorkerJobDto.
                     jobs.Add(new WorkerJobDto {
                         TrxNo = Convert.ToInt32(row["TrxNo"]),
                         WorkerID = row["WorkerID"].ToString(),
@@ -124,10 +133,12 @@ namespace DocuShareIndexingAPI.Controllers
                         CreateDateTime = Convert.ToDateTime(row["CreateDateTime"]),
                         UpdateDateTime = Convert.ToDateTime(row["UpdateDateTime"])
                     });
+
                 }
 
             } catch {}
 
+            // Final Return list of WorkerJobDto.
             return jobs;
         }
     }
