@@ -26,6 +26,11 @@ namespace DocuShareIndexingAPI.Controllers
         }
 
 
+
+        /**
+        * @dev The function will return queue event collection.
+        */
+        [Authorize]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<EventQueueDto>>> getEventQueue()
         {
@@ -37,20 +42,42 @@ namespace DocuShareIndexingAPI.Controllers
                 "SP_EventQueue_List", 
                 CommandType.StoredProcedure);
 
-            return null;
+            // Final return are queues.
+            return EventQueueHelper.convertDataSetToEventQueue(dsSet);
+        }
+
+
+        [Authorize]
+        [HttpPost]
+        [Route("{id}")]
+        public async Task<ActionResult<bool>> deleteEventQueue(int id)
+        {
+            // 1. Create DbAdapter object for execute user to database.
+            var adapter = new DbAdapter(_config.GetConnectionString("DefaultConnection"));
+
+            await adapter.executedAsync("SP_EventQueue_Delete", CommandType.StoredProcedure,
+            new SqlParameter[] { new SqlParameter("", id)});
+
+            return Ok();
         }
 
     }
 
 
+
+    /**
+    * @notice This is class will be helping convert stream data to object. 
+    */
     public static class EventQueueHelper
     {
         public static List<EventQueueDto> convertDataSetToEventQueue(DataSet dataset)
         {
+            // 1. Create events objects.
             List<EventQueueDto> events = new List<EventQueueDto>();
 
             try
             {
+                // 2. Convert datarow to event object.
                 foreach (DataRow row in dataset.Tables[0].Rows)
                 {
                     events.Add(new EventQueueDto {
@@ -63,6 +90,7 @@ namespace DocuShareIndexingAPI.Controllers
 
             } catch {}
 
+            // Final return the events.
             return events;
         }
     }

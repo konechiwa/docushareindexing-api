@@ -95,7 +95,10 @@ namespace DocuShareIndexingAPI.Controllers
         public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
         {
 
+            // 1. Create DbAdapter object for execute user to database.
             var adapter = new DbAdapter(_config.GetConnectionString("DefaultConnection"));
+
+            // 2. Check exists username on the system.
             var dsUser = await adapter.getDataSetAsync(
                 @"SELECT 
                     Username, 
@@ -107,25 +110,31 @@ namespace DocuShareIndexingAPI.Controllers
                     new SqlParameter[] { new SqlParameter("@Username", loginDto.Username),
                 });
 
+            // 3. If the user not exists then return unauthorized.
             if (dsUser.Tables[0].Rows.Count == 0) {
                 return Unauthorized("Invalid Username");
             }
 
+            // 4. Create new User object.
             var user = new User {
                 Username = loginDto.Username,
                 PasswordHash = (byte[])dsUser.Tables[0].Rows[0]["PasswordHash"],
                 PasswordSalt = (byte[])dsUser.Tables[0].Rows[0]["PasswordSalt"],
             };
 
+            // 5. Build hmac with passwordSalt.
             using var hmac = new HMACSHA512(user.PasswordSalt);
             var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(loginDto.Password));
 
+            // 6. Validate user password hash.
             for (int i = 0; i < computedHash.Length; i++)
             {
+                // NOTE: If password not matches will be return unauthorized.
                 if (computedHash[i] != user.PasswordHash[i]) 
-                return Unauthorized("Invalid password");
+                    return Unauthorized("Invalid password");
             }
 
+            // FINAL : Return the UserDto object.
             return new UserDto {
                 Username = user.Username,
                 Token = _tokenService.createToken(user)

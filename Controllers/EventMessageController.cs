@@ -157,10 +157,12 @@ namespace DocuShareIndexingAPI.Controllers
     {
         public static List<EventMessage> convertDataSetToEventMessageList(DataSet dataset)
         {
+            // 1. Creare event message list.
             List<EventMessage> events = new List<EventMessage>();
 
             try
             {
+                // 2. Convert datarow to event message object.
                 foreach (DataRow row in dataset.Tables[0].Rows)
                 {
                     events.Add(new EventMessage 
@@ -177,6 +179,7 @@ namespace DocuShareIndexingAPI.Controllers
 
             } catch {}
 
+            // Final Return the event message list.
             return events;
         }
     }
