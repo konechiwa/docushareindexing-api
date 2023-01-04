@@ -45,7 +45,7 @@ namespace DocuShareIndexingAPI.Service
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.Now.AddYears(1),
+                Expires = DateTime.Now.AddYears(2),
                 SigningCredentials = creds,
             };
 

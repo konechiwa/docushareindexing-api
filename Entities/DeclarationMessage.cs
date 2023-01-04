@@ -28,6 +28,8 @@ namespace DocuShareIndexingAPI.Entities
         public DateTime UDateDeclare { get; set; }
         public DateTime UDateRelease { get; set; }
         public string MaterialType { get; set; }
+        public string DatabaseSeq { get; set; }
+        public string BranchSeq { get; set; }
         public string Period { get; set; }
 
     }
